@@ -4,7 +4,7 @@ const $ = (id) => document.getElementById(id);
 const canvas = $('profileCanvas');
 const ctx = canvas.getContext('2d');
 const MAX_PICK = 8;
-const STORAGE_KEY = 'dbd-korea-profile-card-v3';
+const SESSION_KEY = 'dbd-korea-profile-card-session-v1';
 const SHARE_VERSION = 3;
 const OFFLINE_READY_KEY = 'dbd-korea-offline-ready-v1';
 
@@ -26,10 +26,10 @@ const DISCORD_ICON = 'assets/platforms/discord.svg';
 const GRADES = ['미설정','잿빛 IV','잿빛 III','잿빛 II','잿빛 I','청동 IV','청동 III','청동 II','청동 I','은빛 IV','은빛 III','은빛 II','은빛 I','금빛 IV','금빛 III','금빛 II','금빛 I','무지갯빛 IV','무지갯빛 III','무지갯빛 II','무지갯빛 I'];
 
 const defaultState = () => ({
-  name:'서드', friend:'336408423', time:'21:00 ~ 03:00', playStyle:'즐겜 · 협동',
-  survivorGrade:'무지갯빛 I', killerGrade:'무지갯빛 I', platforms:['steam','playstation','switch'], vc:true,
-  quote:'DONE AND DUSTED.\nTERCEIRA ESTACAO.', theme:'mist',
-  survivors:['S32','S26','S33','S28','S41','S36'], killers:['K11','K27','K24','K25','K43','K10']
+  name:'', friend:'', time:'', playStyle:'',
+  survivorGrade:'미설정', killerGrade:'미설정', platforms:[], vc:false,
+  quote:'', theme:'mist',
+  survivors:[], killers:[]
 });
 let state = defaultState();
 let toastTimer = null;
@@ -112,7 +112,16 @@ function encodeState(){
 function loadInitialState(){
   const shared = decodeShareHash();
   if(shared){ state = shared; showToast('공유 프로필을 불러왔습니다.'); return; }
-  try{ state = sanitizeState(JSON.parse(localStorage.getItem(STORAGE_KEY))); }catch{ state=defaultState(); }
+  try{
+    const navType = performance.getEntriesByType('navigation')[0]?.type || 'navigate';
+    if(navType === 'reload' || navType === 'back_forward'){
+      const saved = sessionStorage.getItem(SESSION_KEY);
+      state = saved ? sanitizeState(JSON.parse(saved)) : defaultState();
+    } else {
+      sessionStorage.removeItem(SESSION_KEY);
+      state = defaultState();
+    }
+  }catch{ state=defaultState(); }
 }
 
 function buildStaticControls(){
@@ -149,7 +158,7 @@ function bindInputs(){
   $('killerSearch').addEventListener('input',renderCharacterGrids);
   $('resetBtn').addEventListener('click',()=>{
     if(!confirm('입력 내용과 캐릭터 선택을 초기 상태로 되돌릴까요?')) return;
-    state=defaultState(); history.replaceState(null,'',location.pathname+location.search); updateControls(); renderCharacterGrids(); changed(); showToast('초기화했습니다.');
+    state=defaultState(); sessionStorage.removeItem(SESSION_KEY); history.replaceState(null,'',location.pathname+location.search); updateControls(); renderCharacterGrids(); changed(); showToast('초기화했습니다.');
   });
   $('downloadBtn').addEventListener('click',exportPng);
   $('shareBtn').addEventListener('click',copyShareLink);
@@ -204,7 +213,7 @@ function renderSelected(){
 
 function changed(){
   $('saveState').textContent='저장 중…'; clearTimeout(saveTimer);
-  saveTimer=setTimeout(()=>{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));$('saveState').textContent='자동 저장됨';},220);
+  saveTimer=setTimeout(()=>{sessionStorage.setItem(SESSION_KEY,JSON.stringify(state));$('saveState').textContent='자동 저장됨';},220);
   drawCard();
 }
 
