@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#090d14" />
+  <meta name="description" content="Dead by Daylight 한국 커뮤니티용 비공식 프로필 카드 생성기" />
+  <title>안개 속 프로필 — DBD Korea Profile Card</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="assets/pwa-192.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="ambient ambient-a"></div>
+  <div class="ambient ambient-b"></div>
+  <header class="site-header shell">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+      <div>
+        <p class="eyebrow">DBD KOREA · COMMUNITY TOOL</p>
+        <h1>안개 속 프로필</h1>
+      </div>
+    </div>
+    <div class="roster-chip" title="2026-10-07 공개 로스터 기준">
+      <span>2026.10</span><b>SURVIVOR 54</b><b>KILLER 44</b>
+    </div>
+  </header>
+
+  <main class="shell main-grid">
+    <section class="panel editor-panel" aria-labelledby="editor-title">
+      <div class="section-head">
+        <div><p class="eyebrow">PROFILE SETTINGS</p><h2 id="editor-title">프로필 입력</h2></div>
+        <button id="resetBtn" class="text-button" type="button">초기화</button>
+      </div>
+
+      <div class="form-grid">
+        <label class="field"><span>이름</span><input id="nameInput" maxlength="18" value="서드" /></label>
+        <label class="field"><span>친구 코드 / ID</span><input id="friendInput" maxlength="24" value="336408423" /></label>
+        <label class="field"><span>주 접속 시간</span><input id="timeInput" maxlength="24" value="21:00 ~ 03:00" /></label>
+        <label class="field"><span>플레이 스타일</span><input id="styleInput" maxlength="18" value="즐겜 · 협동" /></label>
+      </div>
+
+      <div class="split-fields">
+        <label class="field grade-field">
+          <span>생존자 최고 등급</span>
+          <select id="survivorGrade"></select>
+          <div class="grade-preview"><img id="survivorGradePreview" alt="생존자 등급 배지" /><b id="survivorGradeLabel"></b></div>
+        </label>
+        <label class="field grade-field">
+          <span>살인마 최고 등급</span>
+          <select id="killerGrade"></select>
+          <div class="grade-preview"><img id="killerGradePreview" alt="살인마 등급 배지" /><b id="killerGradeLabel"></b></div>
+        </label>
+      </div>
+
+      <div class="field-block">
+        <span class="label-title">플랫폼 <small>복수 선택 가능</small></span>
+        <div id="platformButtons" class="chip-row" role="group" aria-label="플랫폼 선택"></div>
+      </div>
+
+      <div class="field-block compact-row">
+        <span class="label-title">음성 채팅</span>
+        <label class="toggle"><input id="vcInput" type="checkbox" checked /><span></span><b>Discord 사용</b></label>
+      </div>
+
+      <label class="field quote-field"><span>한마디</span><textarea id="quoteInput" maxlength="90" rows="3">DONE AND DUSTED.\nTERCEIRA ESTACAO.</textarea><small><b id="quoteCount">0</b>/90</small></label>
+
+      <div class="field-block">
+        <span class="label-title">카드 테마</span>
+        <div id="themeButtons" class="theme-row" role="group" aria-label="카드 테마 선택"></div>
+      </div>
+    </section>
+
+    <section class="panel preview-panel" aria-labelledby="preview-title">
+      <div class="section-head preview-head">
+        <div><p class="eyebrow">LIVE PREVIEW</p><h2 id="preview-title">카드 미리보기</h2></div>
+        <div class="preview-status"><span id="networkState" class="network-state">온라인</span><span id="saveState" class="save-state">자동 저장됨</span></div>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="profileCanvas" width="1600" height="900" aria-label="완성된 프로필 카드 미리보기"></canvas>
+      </div>
+      <div class="action-row">
+        <button id="downloadBtn" class="primary-button" type="button">PNG 저장</button>
+        <button id="shareBtn" class="secondary-button" type="button">공유 링크 복사</button>
+        <button id="offlineBtn" class="secondary-button offline-button" type="button">오프라인 사용 준비</button>
+      </div>
+      <p id="offlineHelp" class="helper">온라인 사이트에서는 ‘오프라인 사용 준비’를 한 번 실행하면 주요 파일과 캐릭터 초상화를 캐시에 저장합니다. ZIP을 PC에서 직접 사용할 때는 포함된 오프라인 준비 배치 파일을 이용할 수 있습니다.</p>
+    </section>
+  </main>
+
+  <section class="shell roster-area">
+    <div class="roster-column panel survivor-panel">
+      <div class="roster-title-row">
+        <div><p class="eyebrow survivor-text">SURVIVOR</p><h2>사용 생존자</h2></div>
+        <span class="count-badge"><b id="survivorCount">0</b>/8</span>
+      </div>
+      <div id="selectedSurvivors" class="selected-strip" aria-label="선택한 생존자"></div>
+      <label class="search-box"><span aria-hidden="true">⌕</span><input id="survivorSearch" placeholder="한국어·영문 이름 검색" autocomplete="off" /></label>
+      <div id="survivorGrid" class="character-grid" aria-live="polite"></div>
+    </div>
+
+    <div class="roster-column panel killer-panel">
+      <div class="roster-title-row">
+        <div><p class="eyebrow killer-text">KILLER</p><h2>사용 살인마</h2></div>
+        <span class="count-badge"><b id="killerCount">0</b>/8</span>
+      </div>
+      <div id="selectedKillers" class="selected-strip" aria-label="선택한 살인마"></div>
+      <label class="search-box"><span aria-hidden="true">⌕</span><input id="killerSearch" placeholder="한국어·영문 이름 검색" autocomplete="off" /></label>
+      <div id="killerGrid" class="character-grid" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <footer class="shell footer">
+    <p><b>비공식 팬메이드 도구.</b> Dead by Daylight 및 관련 명칭·캐릭터의 권리는 각 권리자에게 있습니다. 본 프로젝트는 Behaviour Interactive의 공식 서비스가 아닙니다.</p>
+    <p>캐릭터 초상화는 로컬 파일을 우선 사용하고, 없으면 온라인 소스로 자동 대체합니다. ZIP의 「초상화_오프라인_저장.bat」를 한 번 실행하면 98명의 초상화를 로컬 저장할 수 있습니다.</p>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="data.js"></script>
+  <script src="embedded-assets.js"></script>
+  <script src="portrait-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

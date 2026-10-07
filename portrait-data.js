@@ -1,0 +1,1 @@
+window.EMBEDDED_PORTRAITS = window.EMBEDDED_PORTRAITS || {};
