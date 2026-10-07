@@ -1,4 +1,4 @@
-const APP_CACHE = 'dbd-profile-app-v5';
+const APP_CACHE = 'dbd-profile-app-v6';
 const PORTRAIT_CACHE = 'dbd-profile-portraits-v1';
 const CORE = [
   './',

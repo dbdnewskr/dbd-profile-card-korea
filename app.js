@@ -240,21 +240,22 @@ function drawAssetContain(c,src,x,y,w,h){
 
 function gradeColor(grade){ if(grade.startsWith('무지갯빛'))return '#ff4f63'; if(grade.startsWith('금빛'))return '#eab54d'; if(grade.startsWith('은빛'))return '#b9c4cf'; if(grade.startsWith('청동'))return '#b77a53'; return '#7f8a96'; }
 function drawGrade(c,label,grade,x,y,w,theme){
-  panel(c,x,y,w,106,20,'rgba(5,8,12,.36)');
-  text(c,label,x+20,y+29,15,'700','#8f9ba9');
+  const h = 176;
+  panel(c,x,y,w,h,22,'rgba(5,8,12,.36)','rgba(255,255,255,.075)');
+  text(c,label,x+24,y+36,15,'750','#8f9ba9');
   const src = GRADE_ASSETS[grade] || GRADE_ASSETS['미설정'];
-  const ok = drawAsset(c,src,x+18,y+19,68,68);
+  const ok = drawAssetContain(c,src,x+24,y+48,112,112);
   if(!ok){
-    const col=gradeColor(grade); c.save(); c.translate(x+52,y+55); c.rotate(Math.PI/4); c.fillStyle=col; c.globalAlpha=.92; c.fillRect(-20,-20,40,40); c.restore();
+    const col=gradeColor(grade); c.save(); c.translate(x+80,y+106); c.rotate(Math.PI/4); c.fillStyle=col; c.globalAlpha=.92; c.fillRect(-34,-34,68,68); c.restore();
   }
-  const gradeSize = fitText(c, grade, w-110, 22, 16, '800');
-  text(c,grade,x+98,y+63,gradeSize,'800','#f4f6f8');
-  text(c,grade==='미설정'?'배지 없음':'등급 배지',x+98,y+86,12,'600','#82909f');
+  const gradeSize = fitText(c, grade, w-190, 30, 19, '850');
+  text(c,grade,x+166,y+100,gradeSize,'850','#f4f6f8');
+  text(c,grade==='미설정'?'배지 없음':'최고 등급',x+166,y+130,13,'650','#82909f');
 }
 
 function drawFog(c,w,h,theme){
   c.save();
-  const blobs=[[-80,210,520,170,.11],[420,130,610,190,.085],[1060,210,570,170,.08],[190,700,700,190,.07],[1030,650,720,210,.07]];
+  const blobs=[[-120,190,620,210,.11],[390,110,700,230,.085],[1080,190,620,220,.08],[80,640,820,260,.065],[930,660,780,260,.07],[170,1120,780,260,.06],[980,1180,720,250,.055]];
   blobs.forEach(([x,y,bw,bh,a])=>{const g=c.createRadialGradient(x+bw*.5,y+bh*.5,10,x+bw*.5,y+bh*.5,bw*.55);g.addColorStop(0,`rgba(220,235,240,${a})`);g.addColorStop(1,'rgba(220,235,240,0)');c.fillStyle=g;c.fillRect(x,y,bw,bh);});
   c.globalAlpha=.18;c.strokeStyle=theme.grid;c.lineWidth=1;
   for(let gx=0;gx<w;gx+=80)line(c,gx,0,gx,h,theme.grid);for(let gy=0;gy<h;gy+=80)line(c,0,gy,w,gy,theme.grid);
@@ -274,16 +275,16 @@ function drawPlatformPills(c,x,y,ids,theme){
   let px=x;
   ids.forEach(id=>{
     const p=PLATFORMS.find(v=>v.id===id); if(!p) return;
-    c.font=`700 13px Pretendard, sans-serif`;
-    const label = p.shortLabel || p.label;
-    const w = Math.min(112, Math.max(68, c.measureText(label).width + 55));
-    panel(c,px,y,w,40,18,'rgba(255,255,255,.055)','rgba(255,255,255,.09)');
-    const iconDrawn = drawAsset(c,p.icon,px+9,y+8,24,24);
-    if(!iconDrawn){ c.fillStyle=theme.accent; c.beginPath(); c.arc(px+21,y+20,5,0,Math.PI*2); c.fill(); }
-    text(c,label,px+41,y+26,13,'700','#cbd3dc');
-    px+=w+8;
+    c.font=`700 14px Pretendard, sans-serif`;
+    const label = p.label;
+    const pillW = Math.min(154, Math.max(88, c.measureText(label).width + 62));
+    panel(c,px,y,pillW,44,18,'rgba(255,255,255,.055)','rgba(255,255,255,.09)');
+    const iconDrawn = drawAssetContain(c,p.icon,px+10,y+8,28,28);
+    if(!iconDrawn){ c.fillStyle=theme.accent; c.beginPath(); c.arc(px+24,y+22,5,0,Math.PI*2); c.fill(); }
+    text(c,label,px+46,y+29,14,'700','#cbd3dc');
+    px+=pillW+9;
   });
-  if(!ids.length) text(c,'미설정',x,y+25,13,'600','#5f6a77');
+  if(!ids.length) text(c,'미설정',x,y+28,14,'600','#5f6a77');
 }
 function drawVcBadge(c,x,y,enabled){
   panel(c,x,y,200,40,16,'rgba(255,255,255,.045)','rgba(255,255,255,.08)');
@@ -304,11 +305,31 @@ function cropCover(c,img,x,y,w,h,r=14){
   c.save();roundedRect(c,x,y,w,h,r);c.clip();
   const scale=Math.max(w/img.naturalWidth,h/img.naturalHeight);const sw=w/scale,sh=h/scale,sx=(img.naturalWidth-sw)/2,sy=Math.max(0,(img.naturalHeight-sh)*.28);c.drawImage(img,sx,sy,sw,sh,x,y,w,h);c.restore();
 }
-function drawRosterRow(c,label,ids,type,x,y,w,theme){
-  text(c,label,x,y,15,'800',type==='survivor'?theme.survivor:theme.killer);
-  const chars=ids.map(id=>BY_ID.get(id)).filter(Boolean);const size=74,gap=10;let px=x;const top=y+18;
-  if(!chars.length){panel(c,x,top,w,74,15,'rgba(4,7,11,.25)','rgba(255,255,255,.06)');text(c,'선택한 캐릭터 없음',x+18,top+45,15,'600','#687483');return;}
-  chars.forEach(ch=>{const img=imageCache.get(ch.id)?.img;if(img&&img.complete&&img.naturalWidth) cropCover(c,img,px,top,size,size,14); else drawAvatarPlaceholder(c,ch,px,top,size,type,theme);px+=size+gap;});
+function drawRosterGrid(c,label,ids,type,x,y,w,h,theme){
+  const accent = type==='survivor'?theme.survivor:theme.killer;
+  panel(c,x,y,w,h,22,'rgba(4,7,11,.25)','rgba(255,255,255,.07)');
+  text(c,label,x+24,y+38,16,'850',accent);
+  text(c,`${ids.length}/8`,x+w-24,y+38,13,'750','#65717f','right');
+  const chars=ids.map(id=>BY_ID.get(id)).filter(Boolean);
+  if(!chars.length){
+    panel(c,x+24,y+66,w-48,h-90,16,'rgba(255,255,255,.025)','rgba(255,255,255,.05)');
+    text(c,'선택한 캐릭터가 없습니다.',x+w/2,y+h/2+5,16,'650','#687483','center');
+    return;
+  }
+  const cols=4, gap=12;
+  const innerW=w-48;
+  const cell=(innerW-gap*(cols-1))/cols;
+  const top=y+68;
+  const rowGap=14;
+  chars.forEach((ch,i)=>{
+    const col=i%cols,row=Math.floor(i/cols);
+    const px=x+24+col*(cell+gap), py=top+row*(cell+rowGap);
+    const img=imageCache.get(ch.id)?.img;
+    if(img&&img.complete&&img.naturalWidth) cropCover(c,img,px,py,cell,cell,15); else drawAvatarPlaceholder(c,ch,px,py,cell,type,theme);
+    c.save(); roundedRect(c,px,py+cell-39,cell,39,15); c.clip();
+    const grad=c.createLinearGradient(0,py+cell-39,0,py+cell); grad.addColorStop(0,'rgba(3,6,10,0)');grad.addColorStop(.36,'rgba(3,6,10,.68)');grad.addColorStop(1,'rgba(3,6,10,.92)'); c.fillStyle=grad;c.fillRect(px,py+cell-39,cell,39); c.restore();
+    const nameSize=fitText(c,ch.ko,cell-14,14,10,'800'); text(c,ch.ko,px+cell/2,py+cell-11,nameSize,'800','#f3f6f8','center');
+  });
 }
 function wrapLines(c,value,maxWidth,maxLines,size,weight){
   const raw=value.split('\n');const out=[];c.font=`${weight} ${size}px Pretendard, 'Noto Sans KR', sans-serif`;
@@ -319,30 +340,45 @@ function wrapLines(c,value,maxWidth,maxLines,size,weight){
 function drawCard(){
   const t=THEMES[state.theme]||THEMES.mist; const w=canvas.width,h=canvas.height;
   const bg=ctx.createLinearGradient(0,0,w,h);bg.addColorStop(0,t.bg1);bg.addColorStop(1,t.bg2);ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);drawFog(ctx,w,h,t);
-  const glow=ctx.createRadialGradient(1320,80,0,1320,80,520);glow.addColorStop(0,t.accent+'35');glow.addColorStop(1,'transparent');ctx.fillStyle=glow;ctx.fillRect(780,0,820,580);
+  const glow=ctx.createRadialGradient(1330,110,0,1330,110,610);glow.addColorStop(0,t.accent+'30');glow.addColorStop(1,'transparent');ctx.fillStyle=glow;ctx.fillRect(720,0,880,720);
   drawBrand(ctx,t); line(ctx,34,126,1566,126,'rgba(255,255,255,.09)');
 
-  // identity block
-  text(ctx,'안개 속 프로필',72,193,20,'800',t.accent); const nameSize=fitText(ctx,state.name || '이름 없음',580,58,34,'850');text(ctx,state.name||'이름 없음',70,250,nameSize,'850','#f5f7f9');
-  text(ctx,'ID / FRIEND CODE',72,288,12,'800','#687483');text(ctx,state.friend||'—',72,321,19,'650','#cbd3db');
+  // 핵심 프로필 정보
+  panel(ctx,70,154,1460,224,24,'rgba(4,7,11,.25)','rgba(255,255,255,.07)');
+  text(ctx,'안개 속 프로필',100,195,16,'800',t.accent);
+  const nameSize=fitText(ctx,state.name || '이름 없음',420,56,32,'850');
+  text(ctx,state.name||'이름 없음',98,258,nameSize,'850','#f5f7f9');
+  text(ctx,'ID / FRIEND CODE',100,301,12,'800','#687483');
+  const friendSize=fitText(ctx,state.friend||'—',420,21,15,'700');
+  text(ctx,state.friend||'—',100,333,friendSize,'700','#cbd3db');
+  drawInfoBox(ctx,'주 접속 시간',state.time,600,205,420,112,t);
+  drawInfoBox(ctx,'플레이 스타일',state.playStyle,1040,205,420,112,t);
 
-  drawInfoBox(ctx,'주 접속 시간',state.time,70,370,315,96,t); drawInfoBox(ctx,'플레이 스타일',state.playStyle,400,370,315,96,t);
-  text(ctx,'PLATFORM',72,505,12,'800','#687483');drawPlatformPills(ctx,72,519,state.platforms,t);
-  text(ctx,'VOICE CHAT',72,590,12,'800','#687483'); drawVcBadge(ctx,72,605,state.vc);
+  // 최고 등급
+  drawGrade(ctx,'생존자 최고 등급',state.survivorGrade,70,402,710,t);
+  drawGrade(ctx,'살인마 최고 등급',state.killerGrade,820,402,710,t);
 
-  // grades
-  drawGrade(ctx,'생존자 최고 등급',state.survivorGrade,760,168,370,t); drawGrade(ctx,'살인마 최고 등급',state.killerGrade,1150,168,370,t);
-  // roster
-  panel(ctx,760,292,760,347,22,'rgba(4,7,11,.24)','rgba(255,255,255,.07)');
-  drawRosterRow(ctx,'SURVIVOR · 사용 생존자',state.survivors,'survivor',792,333,696,t);
-  drawRosterRow(ctx,'KILLER · 사용 살인마',state.killers,'killer',792,460,696,t);
-  text(ctx,`${state.survivors.length}/8`,1487,333,12,'700','#65717f','right');text(ctx,`${state.killers.length}/8`,1487,460,12,'700','#65717f','right');
+  // 플랫폼 / 음성 채팅
+  panel(ctx,70,598,1460,100,22,'rgba(4,7,11,.22)','rgba(255,255,255,.07)');
+  text(ctx,'PLATFORM',96,632,12,'800','#687483');
+  drawPlatformPills(ctx,96,644,state.platforms,t);
+  text(ctx,'VOICE CHAT',1304,632,12,'800','#687483','center');
+  drawVcBadge(ctx,1204,644,state.vc);
 
-  // quote
-  panel(ctx,70,688,1450,145,22,'rgba(4,7,11,.27)','rgba(255,255,255,.07)');text(ctx,'한마디',96,726,13,'800',t.accent);
-  const lines=wrapLines(ctx,state.quote||'—',1360,2,29,'750');lines.forEach((lineText,i)=>text(ctx,lineText,96,774+i*37,29,'750','#f2f4f7'));
-  text(ctx,'DBD KOREA COMMUNITY CARD',1500,813,10,'800','#4f5b68','right');
-  line(ctx,72,858,1520,858,'rgba(255,255,255,.055)'); text(ctx,'팬메이드 · 공식 서비스가 아닙니다',72,882,10,'600','#4f5965'); text(ctx,`${SURVIVORS.length} SURVIVORS  /  ${KILLERS.length} KILLERS`,1520,882,10,'700','#4f5965','right');
+  // 주 사용 캐릭터: 4 × 2 그리드
+  drawRosterGrid(ctx,'SURVIVOR · 사용 생존자',state.survivors,'survivor',70,722,710,494,t);
+  drawRosterGrid(ctx,'KILLER · 사용 살인마',state.killers,'killer',820,722,710,494,t);
+
+  // 한마디
+  panel(ctx,70,1240,1460,250,24,'rgba(4,7,11,.27)','rgba(255,255,255,.07)');
+  text(ctx,'한마디',98,1282,14,'850',t.accent);
+  const quoteLines=wrapLines(ctx,state.quote||'—',1360,3,31,'750');
+  quoteLines.forEach((lineText,i)=>text(ctx,lineText,98,1338+i*43,31,'750','#f2f4f7'));
+  text(ctx,'DBD KOREA COMMUNITY CARD',1500,1460,10,'800','#4f5b68','right');
+
+  line(ctx,72,1534,1528,1534,'rgba(255,255,255,.055)');
+  text(ctx,'팬메이드 · 공식 서비스가 아닙니다',72,1570,10,'600','#4f5965');
+  text(ctx,`${SURVIVORS.length} SURVIVORS  /  ${KILLERS.length} KILLERS`,1528,1570,10,'700','#4f5965','right');
 
   preloadSelectedImages();
   preloadDisplayAssets();
