@@ -1,4 +1,4 @@
-const APP_CACHE = 'dbd-profile-app-v8.4-voicechattune';
+const APP_CACHE = 'dbd-profile-app-v8.4-platformicons';
 const PORTRAIT_CACHE = 'dbd-profile-portraits-v1';
 const CORE = [
   './',

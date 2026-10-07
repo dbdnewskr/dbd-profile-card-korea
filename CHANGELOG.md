@@ -1,3 +1,9 @@
+## v8.4 추가 수정 — 플랫폼 아이콘 교체
+- Steam 아이콘을 새 이미지로 교체
+- PlayStation 아이콘을 새 이미지로 교체
+- Nintendo Switch 아이콘을 새 이미지로 교체
+- 오프라인 저장/캐시 반영을 위해 embedded-assets.js 및 sw.js 갱신
+
 ## v8.4 추가 수정 — 보이스 챗 배치 조정
 - VOICE CHAT 영역 전체를 왼쪽으로 소폭 이동
 - Discord 사용 아이콘 위치도 함께 왼쪽으로 이동

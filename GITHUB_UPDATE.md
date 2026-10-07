@@ -3,9 +3,12 @@
 표시 버전은 그대로 **v8.4** 입니다.
 
 업로드 대상
-- app.js
+- assets/steam.png
+- assets/playstation.png
+- assets/switch.png
+- embedded-assets.js
 - sw.js
 - CHANGELOG.md
 
 추천 커밋 메시지
-`v8.4: tune voice chat position and inactive text`
+`v8.4: replace steam, playstation, and switch icons`
