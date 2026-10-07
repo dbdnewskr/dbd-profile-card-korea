@@ -429,11 +429,11 @@ function drawCard(){
   drawRosterGrid(ctx,'SURVIVOR · 사용 생존자',state.survivors,'survivor',70,854,710,430,t);
   drawRosterGrid(ctx,'KILLER · 사용 살인마',state.killers,'killer',820,854,710,430,t);
 
-  // 한마디 — 세로 공간은 줄이고 짧은 문구는 크게 표시
+  // 한마디 — 라벨을 더 크게 하고 라벨/본문 간격을 넉넉하게 조정
   panel(ctx,70,1304,1460,200,24,'rgba(4,7,11,.27)','rgba(255,255,255,.07)');
-  text(ctx,'한마디',98,1348,21,'850',t.accent);
-  const quoteLayout=fitQuoteLayout(ctx,state.quote||'—',1360,104,3,'800');
-  const quoteTop=1406;
+  text(ctx,'한마디',98,1358,28,'850',t.accent);
+  const quoteLayout=fitQuoteLayout(ctx,state.quote||'—',1360,88,3,'800');
+  const quoteTop=1432;
   quoteLayout.lines.forEach((lineText,i)=>text(ctx,lineText,98,quoteTop+i*quoteLayout.lineHeight,quoteLayout.size,'800','#f2f4f7'));
   text(ctx,'DBD KOREA COMMUNITY CARD',1500,1485,11,'800','#4f5b68','right');
 

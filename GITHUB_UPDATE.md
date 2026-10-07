@@ -3,12 +3,8 @@
 표시 버전은 그대로 **v8.4** 입니다.
 
 업로드 대상
-- assets/steam.png
-- assets/playstation.png
-- assets/switch.png
-- embedded-assets.js
-- sw.js
+- app.js
 - CHANGELOG.md
 
 추천 커밋 메시지
-`v8.4: replace steam, playstation, and switch icons`
+`v8.4: improve quote label size and spacing`
