@@ -1,10 +1,15 @@
-# GitHub 업데이트 방법 — v8.2
+# GitHub 업데이트 방법 (v8.3)
 
-이번 업데이트는 한마디 영역의 가독성을 개선하는 소규모 패치입니다.
+등급 명칭만 수정한 소규모 업데이트입니다.
 
-1. 이 폴더의 파일을 GitHub 저장소 루트에 업로드합니다.
-2. 같은 이름의 기존 파일은 새 파일로 덮어씁니다.
-3. 추천 커밋 메시지: `v8.2: improve quote readability`
-4. Pages 배포 완료 후 강력 새로고침(Ctrl+F5) 또는 모바일 브라우저 재실행으로 확인합니다.
+변경 사항
+- 무지갯빛 IV → 핏빛 IV
+- 무지갯빛 III → 핏빛 III
+- 무지갯빛 II → 핏빛 II
+- 무지갯빛 I → 핏빛 I
 
-변경 파일: app.js, index.html, sw.js, VERSION.txt, CHANGELOG.md
+업데이트 방법
+1. 이 폴더 안의 파일들을 GitHub 저장소 루트에 업로드해 기존 파일을 덮어씁니다.
+2. 추천 커밋 메시지: `v8.3: rename iridescent grade to blood grade`
+3. GitHub Pages 배포가 완료되면 새로고침합니다.
+4. 기존 표기가 남아 있으면 강력 새로고침 또는 사이트 캐시를 지운 뒤 다시 확인합니다.

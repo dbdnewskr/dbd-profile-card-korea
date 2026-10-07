@@ -23,7 +23,7 @@ const PLATFORMS = [
   {id:'msstore',label:'MS Store',shortLabel:'MS',icon:'assets/platforms/msstore.png'}
 ];
 const DISCORD_ICON = 'assets/platforms/discord.svg';
-const GRADES = ['미설정','잿빛 IV','잿빛 III','잿빛 II','잿빛 I','청동 IV','청동 III','청동 II','청동 I','은빛 IV','은빛 III','은빛 II','은빛 I','금빛 IV','금빛 III','금빛 II','금빛 I','무지갯빛 IV','무지갯빛 III','무지갯빛 II','무지갯빛 I'];
+const GRADES = ['미설정','잿빛 IV','잿빛 III','잿빛 II','잿빛 I','청동 IV','청동 III','청동 II','청동 I','은빛 IV','은빛 III','은빛 II','은빛 I','금빛 IV','금빛 III','금빛 II','금빛 I','핏빛 IV','핏빛 III','핏빛 II','핏빛 I'];
 
 const defaultState = () => ({
   name:'', friend:'', time:'', playStyle:'',
@@ -37,7 +37,7 @@ let saveTimer = null;
 const imageCache = new Map();
 const assetCache = new Map();
 
-const gradeTierToFile = {'잿빛':'ash','청동':'bronze','은빛':'silver','금빛':'gold','무지갯빛':'iri'};
+const gradeTierToFile = {'잿빛':'ash','청동':'bronze','은빛':'silver','금빛':'gold','핏빛':'iri'};
 const romanToNum = {'IV':'4','III':'3','II':'2','I':'1'};
 const GRADE_ASSETS = Object.fromEntries(GRADES.map((grade)=>[grade, getGradeAssetPath(grade)]));
 
@@ -256,7 +256,7 @@ function drawAssetCover(c,src,x,y,w,h){
   c.drawImage(img, sx, sy, sw, sh, x, y, w, h); return true;
 }
 
-function gradeColor(grade){ if(grade.startsWith('무지갯빛'))return '#ff4f63'; if(grade.startsWith('금빛'))return '#eab54d'; if(grade.startsWith('은빛'))return '#b9c4cf'; if(grade.startsWith('청동'))return '#b77a53'; return '#7f8a96'; }
+function gradeColor(grade){ if(grade.startsWith('핏빛'))return '#ff4f63'; if(grade.startsWith('금빛'))return '#eab54d'; if(grade.startsWith('은빛'))return '#b9c4cf'; if(grade.startsWith('청동'))return '#b77a53'; return '#7f8a96'; }
 function drawGrade(c,label,grade,x,y,w,theme){
   const h = 176;
   panel(c,x,y,w,h,22,'rgba(5,8,12,.36)','rgba(255,255,255,.075)');

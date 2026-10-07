@@ -10,7 +10,7 @@ Dead by Daylight 한국 커뮤니티에서 사용할 수 있도록 만든 **비�
 - 생존자·살인마 각각 최대 8명 선택
 - 이름, 친구 코드, 접속 시간, 플레이 스타일, 최고 등급, 플랫폼, Discord VC, 한마디 입력
 - Steam / PlayStation / Xbox / Switch / Epic Games / Microsoft Store 로고 표시
-- 잿빛·청동·은빛·금빛·무지갯빛 I~IV 등급 배지
+- 잿빛·청동·은빛·금빛·핏빛 I~IV 등급 배지
 - 안개 / 블러드 레드 / 딥 네이비 테마
 - **1600×1600 (1:1)** 실시간 Canvas 미리보기 및 PNG 저장
 - LocalStorage 자동 저장

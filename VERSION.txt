@@ -1,1 +1,1 @@
-v8.2 — Quote Readability Adjustment
+v8.3 — Grade Label Terminology Fix
