@@ -1,4 +1,4 @@
-const APP_CACHE = 'dbd-profile-app-v6';
+const APP_CACHE = 'dbd-profile-app-v8';
 const PORTRAIT_CACHE = 'dbd-profile-portraits-v1';
 const CORE = [
   './',
@@ -19,6 +19,7 @@ const CORE = [
   './assets/platforms/epic.png',
   './assets/platforms/msstore.png',
   './assets/platforms/discord.svg',
+  './assets/themes/campfire.jpg',
   './assets/grades/ash-1.png',
   './assets/grades/ash-2.png',
   './assets/grades/ash-3.png',

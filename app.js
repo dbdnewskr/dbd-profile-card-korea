@@ -11,7 +11,8 @@ const OFFLINE_READY_KEY = 'dbd-korea-offline-ready-v1';
 const THEMES = {
   mist: {label:'안개',bg1:'#08131b',bg2:'#111b25',accent:'#e9465c',survivor:'#56dfd1',killer:'#ff5268',panel:'rgba(10,18,26,.78)',grid:'rgba(107,211,210,.08)'},
   blood: {label:'블러드 레드',bg1:'#15070a',bg2:'#2b0a10',accent:'#ff4057',survivor:'#d8f5ef',killer:'#ff5268',panel:'rgba(25,8,12,.78)',grid:'rgba(255,80,97,.07)'},
-  midnight: {label:'딥 네이비',bg1:'#070a17',bg2:'#10162c',accent:'#7767ff',survivor:'#65e5dc',killer:'#ff657d',panel:'rgba(9,12,30,.78)',grid:'rgba(119,103,255,.08)'}
+  midnight: {label:'딥 네이비',bg1:'#070a17',bg2:'#10162c',accent:'#7767ff',survivor:'#65e5dc',killer:'#ff657d',panel:'rgba(9,12,30,.78)',grid:'rgba(119,103,255,.08)'},
+  campfire: {label:'모닥불',bg1:'#090d12',bg2:'#15100d',accent:'#ff7a35',survivor:'#7ce7d7',killer:'#ff5b54',panel:'rgba(7,10,14,.76)',grid:'rgba(255,132,71,.055)',backgroundImage:'assets/themes/campfire.jpg',backgroundDim:.48}
 };
 const PLATFORMS = [
   {id:'steam',label:'Steam',shortLabel:'Steam',icon:'assets/steam.png'},
@@ -132,7 +133,8 @@ function buildStaticControls(){
   const tb=$('themeButtons');
   Object.entries(THEMES).forEach(([id,t])=>{
     const btn=document.createElement('button'); btn.type='button'; btn.className='theme-button'; btn.dataset.id=id;
-    btn.innerHTML=`<span class="chip-dot" style="background:${t.accent}"></span><span>${t.label}</span>`;
+    const dotStyle = t.backgroundImage ? `background-image:url('${t.backgroundImage}');background-size:cover;background-position:center` : `background:${t.accent}`;
+    btn.innerHTML=`<span class="chip-dot" style="${dotStyle}"></span><span>${t.label}</span>`;
     btn.addEventListener('click',()=>{state.theme=id;updateControls();changed();}); tb.appendChild(btn);
   });
 }
@@ -237,6 +239,13 @@ function drawAssetContain(c,src,x,y,w,h){
   const dw = img.naturalWidth * scale, dh = img.naturalHeight * scale;
   c.drawImage(img, x + (w-dw)/2, y + (h-dh)/2, dw, dh); return true;
 }
+function drawAssetCover(c,src,x,y,w,h){
+  const img = getAsset(src); if(!img || !img.complete || !img.naturalWidth || !img.naturalHeight) return false;
+  const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+  const sw = w / scale, sh = h / scale;
+  const sx = (img.naturalWidth - sw) / 2, sy = (img.naturalHeight - sh) / 2;
+  c.drawImage(img, sx, sy, sw, sh, x, y, w, h); return true;
+}
 
 function gradeColor(grade){ if(grade.startsWith('무지갯빛'))return '#ff4f63'; if(grade.startsWith('금빛'))return '#eab54d'; if(grade.startsWith('은빛'))return '#b9c4cf'; if(grade.startsWith('청동'))return '#b77a53'; return '#7f8a96'; }
 function drawGrade(c,label,grade,x,y,w,theme){
@@ -339,7 +348,18 @@ function wrapLines(c,value,maxWidth,maxLines,size,weight){
 
 function drawCard(){
   const t=THEMES[state.theme]||THEMES.mist; const w=canvas.width,h=canvas.height;
-  const bg=ctx.createLinearGradient(0,0,w,h);bg.addColorStop(0,t.bg1);bg.addColorStop(1,t.bg2);ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);drawFog(ctx,w,h,t);
+  const bg=ctx.createLinearGradient(0,0,w,h);bg.addColorStop(0,t.bg1);bg.addColorStop(1,t.bg2);ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+  if(t.backgroundImage){
+    const drawn = drawAssetCover(ctx,t.backgroundImage,0,0,w,h);
+    if(drawn){
+      const shade=ctx.createLinearGradient(0,0,w,h);
+      shade.addColorStop(0,`rgba(3,6,9,${Math.min(.82,(t.backgroundDim||.48)+.12)})`);
+      shade.addColorStop(.48,`rgba(3,6,9,${t.backgroundDim||.48})`);
+      shade.addColorStop(1,`rgba(3,6,9,${Math.min(.84,(t.backgroundDim||.48)+.18)})`);
+      ctx.fillStyle=shade;ctx.fillRect(0,0,w,h);
+    }
+  }
+  drawFog(ctx,w,h,t);
   const glow=ctx.createRadialGradient(1330,110,0,1330,110,610);glow.addColorStop(0,t.accent+'30');glow.addColorStop(1,'transparent');ctx.fillStyle=glow;ctx.fillRect(720,0,880,720);
   drawBrand(ctx,t); line(ctx,34,126,1566,126,'rgba(255,255,255,.09)');
 
@@ -434,6 +454,8 @@ function preloadDisplayAssets(){
   sources.add(GRADE_ASSETS[state.survivorGrade] || GRADE_ASSETS['미설정']);
   sources.add(GRADE_ASSETS[state.killerGrade] || GRADE_ASSETS['미설정']);
   if(state.vc) sources.add(DISCORD_ICON);
+  const activeTheme = THEMES[state.theme] || THEMES.mist;
+  if(activeTheme.backgroundImage) sources.add(activeTheme.backgroundImage);
   sources.forEach(src=>{ const entry=assetCache.get(src); if(!entry || entry.status==='error') loadAsset(src); });
 }
 function drawCardNoPreload(){
@@ -448,7 +470,8 @@ async function exportPng(){
       ...state.platforms.map(id=>PLATFORMS.find(v=>v.id===id)?.icon).filter(Boolean),
       GRADE_ASSETS[state.survivorGrade] || GRADE_ASSETS['미설정'],
       GRADE_ASSETS[state.killerGrade] || GRADE_ASSETS['미설정'],
-      ...(state.vc ? [DISCORD_ICON] : [])
+      ...(state.vc ? [DISCORD_ICON] : []),
+      ...((THEMES[state.theme] || THEMES.mist).backgroundImage ? [(THEMES[state.theme] || THEMES.mist).backgroundImage] : [])
     ];
     await Promise.all(chars.map(ensurePortrait).concat(assetSources.map(loadAsset)));
     drawCard();
