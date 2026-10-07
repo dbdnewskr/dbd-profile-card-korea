@@ -22,7 +22,7 @@ const PLATFORMS = [
   {id:'epic',label:'Epic Games',shortLabel:'Epic',icon:'assets/platforms/epic.png'},
   {id:'msstore',label:'MS Store',shortLabel:'MS',icon:'assets/platforms/msstore.png'}
 ];
-const DISCORD_ICON = 'assets/platforms/discord.svg';
+const DISCORD_ICON = 'assets/platforms/discord.png';
 const GRADES = ['미설정','잿빛 IV','잿빛 III','잿빛 II','잿빛 I','청동 IV','청동 III','청동 II','청동 I','은빛 IV','은빛 III','은빛 II','은빛 I','금빛 IV','금빛 III','금빛 II','금빛 I','핏빛 IV','핏빛 III','핏빛 II','핏빛 I'];
 
 const defaultState = () => ({
@@ -258,17 +258,17 @@ function drawAssetCover(c,src,x,y,w,h){
 
 function gradeColor(grade){ if(grade.startsWith('핏빛'))return '#ff4f63'; if(grade.startsWith('금빛'))return '#eab54d'; if(grade.startsWith('은빛'))return '#b9c4cf'; if(grade.startsWith('청동'))return '#b77a53'; return '#7f8a96'; }
 function drawGrade(c,label,grade,x,y,w,theme){
-  const h = 176;
-  panel(c,x,y,w,h,22,'rgba(5,8,12,.36)','rgba(255,255,255,.075)');
-  text(c,label,x+24,y+36,15,'750','#8f9ba9');
+  const h = 230;
+  panel(c,x,y,w,h,24,'rgba(5,8,12,.36)','rgba(255,255,255,.075)');
+  text(c,label,x+28,y+48,24,'800','#a0adba');
   const src = GRADE_ASSETS[grade] || GRADE_ASSETS['미설정'];
-  const ok = drawAssetContain(c,src,x+24,y+48,112,112);
+  const ok = drawAssetContain(c,src,x+28,y+58,170,160);
   if(!ok){
-    const col=gradeColor(grade); c.save(); c.translate(x+80,y+106); c.rotate(Math.PI/4); c.fillStyle=col; c.globalAlpha=.92; c.fillRect(-34,-34,68,68); c.restore();
+    const col=gradeColor(grade); c.save(); c.translate(x+112,y+138); c.rotate(Math.PI/4); c.fillStyle=col; c.globalAlpha=.92; c.fillRect(-49,-49,98,98); c.restore();
   }
-  const gradeSize = fitText(c, grade, w-190, 30, 19, '850');
-  text(c,grade,x+166,y+100,gradeSize,'850','#f4f6f8');
-  text(c,grade==='미설정'?'배지 없음':'최고 등급',x+166,y+130,13,'650','#82909f');
+  const gradeSize = fitText(c, grade, w-260, 46, 29, '850');
+  text(c,grade,x+230,y+127,gradeSize,'850','#f4f6f8');
+  text(c,grade==='미설정'?'배지 없음':'최고 등급',x+230,y+169,20,'750','#94a1af');
 }
 
 function drawFog(c,w,h,theme){
@@ -282,37 +282,41 @@ function drawFog(c,w,h,theme){
 function drawBrand(c,theme){
   text(c,'DBD KOREA',78,72,18,'900','#f4f6f8'); text(c,'COMMUNITY PROFILE',78,98,12,'700','#768392');
   c.save(); c.translate(34,44); for(let i=0;i<4;i++){c.strokeStyle=i===0?theme.accent:'#e9eef2';c.lineWidth=4;c.lineCap='round';c.beginPath();c.moveTo(i*10,4+(i%2)*4);c.lineTo(i*10-3,43-(i%2)*3);c.stroke();}c.restore();
-  text(c,'비공식 팬메이드',1530,72,12,'700','#75818f','right'); text(c,'2026.10',1530,94,11,'600','#56616e','right');
+  text(c,'비공식 팬메이드',1530,72,13,'700','#7f8b98','right'); text(c,'2026.10',1530,95,12,'600','#616d79','right');
 }
 function drawInfoBox(c,label,value,x,y,w,h,theme){
-  panel(c,x,y,w,h,18,theme.panel);
-  text(c,label,x+20,y+29,14,'700','#82909f');
-  const s=fitText(c,value || '—',w-40,30,18,'750'); text(c,value || '—',x+20,y+68,s,'750','#f3f5f7');
+  panel(c,x,y,w,h,20,theme.panel);
+  text(c,label,x+24,y+43,21,'800','#9ba8b6');
+  const s=fitText(c,value || '—',w-48,44,27,'800');
+  text(c,value || '—',x+24,y+105,s,'800','#f3f5f7');
 }
 function drawPlatformPills(c,x,y,ids,theme){
   let px=x;
   ids.forEach(id=>{
     const p=PLATFORMS.find(v=>v.id===id); if(!p) return;
-    c.font=`700 14px Pretendard, sans-serif`;
+    c.font=`800 20px Pretendard, sans-serif`;
     const label = p.label;
-    const pillW = Math.min(154, Math.max(88, c.measureText(label).width + 62));
-    panel(c,px,y,pillW,44,18,'rgba(255,255,255,.055)','rgba(255,255,255,.09)');
-    const iconDrawn = drawAssetContain(c,p.icon,px+10,y+8,28,28);
-    if(!iconDrawn){ c.fillStyle=theme.accent; c.beginPath(); c.arc(px+24,y+22,5,0,Math.PI*2); c.fill(); }
-    text(c,label,px+46,y+29,14,'700','#cbd3dc');
-    px+=pillW+9;
+    const extraPad = (id==='epic' || id==='playstation') ? 112 : 96;
+    const minW = (id==='epic' || id==='playstation') ? 152 : 132;
+    const maxW = (id==='epic' || id==='playstation') ? 220 : 198;
+    const pillW = Math.min(maxW, Math.max(minW, c.measureText(label).width + extraPad));
+    panel(c,px,y,pillW,72,22,'rgba(255,255,255,.065)','rgba(255,255,255,.11)');
+    const iconDrawn = drawAssetContain(c,p.icon,px+12,y+10,52,52);
+    if(!iconDrawn){ c.fillStyle=theme.accent; c.beginPath(); c.arc(px+38,y+36,8,0,Math.PI*2); c.fill(); }
+    text(c,label,px+76,y+45,20,'850','#e0e6ec');
+    px+=pillW+11;
   });
-  if(!ids.length) text(c,'미설정',x,y+28,14,'600','#5f6a77');
+  if(!ids.length) text(c,'미설정',x,y+46,20,'750','#6d7885');
 }
 function drawVcBadge(c,x,y,enabled){
-  panel(c,x,y,200,40,16,'rgba(255,255,255,.045)','rgba(255,255,255,.08)');
   if(enabled){
-    const ok = drawAsset(c,DISCORD_ICON,x+12,y+8,24,24);
-    if(!ok){ c.fillStyle='#5865F2'; c.beginPath(); c.arc(x+24,y+20,7,0,Math.PI*2); c.fill(); }
-    text(c,'Discord 사용',x+45,y+26,14,'700','#cbd3dc');
+    panel(c,x,y,92,92,26,'rgba(255,255,255,.055)','rgba(255,255,255,.1)');
+    const ok = drawAssetContain(c,DISCORD_ICON,x+8,y+8,76,76);
+    if(!ok){ c.fillStyle='#5865F2'; c.beginPath(); c.arc(x+46,y+46,20,0,Math.PI*2); c.fill(); }
   } else {
-    c.fillStyle='#5d6672'; c.beginPath(); c.arc(x+24,y+20,7,0,Math.PI*2); c.fill();
-    text(c,'사용 안 함',x+42,y+26,14,'700','#cbd3dc');
+    panel(c,x,y,210,72,22,'rgba(255,255,255,.045)','rgba(255,255,255,.08)');
+    c.fillStyle='#5d6672'; c.beginPath(); c.arc(x+25,y+36,10,0,Math.PI*2); c.fill();
+    text(c,'사용 안 함',x+50,y+49,30,'850','#dce3ea');
   }
 }
 function drawAvatarPlaceholder(c,ch,x,y,size,type,theme){
@@ -326,8 +330,8 @@ function cropCover(c,img,x,y,w,h,r=14){
 function drawRosterGrid(c,label,ids,type,x,y,w,h,theme){
   const accent = type==='survivor'?theme.survivor:theme.killer;
   panel(c,x,y,w,h,22,'rgba(4,7,11,.25)','rgba(255,255,255,.07)');
-  text(c,label,x+24,y+38,16,'850',accent);
-  text(c,`${ids.length}/8`,x+w-24,y+38,13,'750','#65717f','right');
+  text(c,label,x+24,y+46,23,'850',accent);
+  text(c,`${ids.length}/8`,x+w-24,y+46,18,'750','#84909d','right');
   const chars=ids.map(id=>BY_ID.get(id)).filter(Boolean);
   if(!chars.length){
     panel(c,x+24,y+66,w-48,h-90,16,'rgba(255,255,255,.025)','rgba(255,255,255,.05)');
@@ -337,7 +341,7 @@ function drawRosterGrid(c,label,ids,type,x,y,w,h,theme){
   const cols=4, gap=12;
   const innerW=w-48;
   const cell=(innerW-gap*(cols-1))/cols;
-  const top=y+68;
+  const top=y+70;
   const rowGap=14;
   chars.forEach((ch,i)=>{
     const col=i%cols,row=Math.floor(i/cols);
@@ -346,7 +350,7 @@ function drawRosterGrid(c,label,ids,type,x,y,w,h,theme){
     if(img&&img.complete&&img.naturalWidth) cropCover(c,img,px,py,cell,cell,15); else drawAvatarPlaceholder(c,ch,px,py,cell,type,theme);
     c.save(); roundedRect(c,px,py+cell-39,cell,39,15); c.clip();
     const grad=c.createLinearGradient(0,py+cell-39,0,py+cell); grad.addColorStop(0,'rgba(3,6,10,0)');grad.addColorStop(.36,'rgba(3,6,10,.68)');grad.addColorStop(1,'rgba(3,6,10,.92)'); c.fillStyle=grad;c.fillRect(px,py+cell-39,cell,39); c.restore();
-    const nameSize=fitText(c,ch.ko,cell-14,14,10,'800'); text(c,ch.ko,px+cell/2,py+cell-11,nameSize,'800','#f3f6f8','center');
+    const nameSize=fitText(c,ch.ko,cell-14,19,13,'850'); text(c,ch.ko,px+cell/2,py+cell-11,nameSize,'850','#f3f6f8','center');
   });
 }
 function wrapLines(c,value,maxWidth,maxLines,size,weight){
@@ -371,7 +375,7 @@ function wrapAllLines(c,value,maxWidth,size,weight){
 }
 function fitQuoteLayout(c,value,maxWidth,maxHeight,maxLines=3,weight='800'){
   const content=value || '—';
-  for(let size=54; size>=32; size--){
+  for(let size=66; size>=32; size--){
     const lines=wrapAllLines(c,content,maxWidth,size,weight);
     const lineHeight=Math.round(size*1.18);
     if(lines.length<=maxLines && lines.length*lineHeight<=maxHeight){
@@ -399,39 +403,39 @@ function drawCard(){
   const glow=ctx.createRadialGradient(1330,110,0,1330,110,610);glow.addColorStop(0,t.accent+'30');glow.addColorStop(1,'transparent');ctx.fillStyle=glow;ctx.fillRect(720,0,880,720);
   drawBrand(ctx,t); line(ctx,34,126,1566,126,'rgba(255,255,255,.09)');
 
-  // 핵심 프로필 정보
-  panel(ctx,70,154,1460,224,24,'rgba(4,7,11,.25)','rgba(255,255,255,.07)');
-  text(ctx,'안개 속 프로필',100,195,16,'800',t.accent);
-  const nameSize=fitText(ctx,state.name || '이름 없음',420,56,32,'850');
-  text(ctx,state.name||'이름 없음',98,258,nameSize,'850','#f5f7f9');
-  text(ctx,'ID / FRIEND CODE',100,301,12,'800','#687483');
-  const friendSize=fitText(ctx,state.friend||'—',420,21,15,'700');
-  text(ctx,state.friend||'—',100,333,friendSize,'700','#cbd3db');
-  drawInfoBox(ctx,'주 접속 시간',state.time,600,205,420,112,t);
-  drawInfoBox(ctx,'플레이 스타일',state.playStyle,1040,205,420,112,t);
+  // 핵심 프로필 정보 — 주요 정보와 안내 문구를 크게 표시
+  panel(ctx,70,154,1460,260,24,'rgba(4,7,11,.25)','rgba(255,255,255,.07)');
+  text(ctx,'안개 속 프로필',100,202,23,'850',t.accent);
+  const nameSize=fitText(ctx,state.name || '이름 없음',420,62,36,'850');
+  text(ctx,state.name||'이름 없음',98,270,nameSize,'850','#f5f7f9');
+  text(ctx,'ID / FRIEND CODE',100,326,19,'850','#8794a1');
+  const friendSize=fitText(ctx,state.friend||'—',420,29,20,'750');
+  text(ctx,state.friend||'—',100,365,friendSize,'750','#d2d9e0');
+  drawInfoBox(ctx,'주 접속 시간',state.time,600,190,420,150,t);
+  drawInfoBox(ctx,'플레이 스타일',state.playStyle,1040,190,420,150,t);
 
-  // 최고 등급
-  drawGrade(ctx,'생존자 최고 등급',state.survivorGrade,70,402,710,t);
-  drawGrade(ctx,'살인마 최고 등급',state.killerGrade,820,402,710,t);
+  // 최고 등급 — 배지와 텍스트를 약 1.5배 확대
+  drawGrade(ctx,'생존자 최고 등급',state.survivorGrade,70,434,710,t);
+  drawGrade(ctx,'살인마 최고 등급',state.killerGrade,820,434,710,t);
 
-  // 플랫폼 / 음성 채팅
-  panel(ctx,70,598,1460,100,22,'rgba(4,7,11,.22)','rgba(255,255,255,.07)');
-  text(ctx,'PLATFORM',96,632,12,'800','#687483');
-  drawPlatformPills(ctx,96,644,state.platforms,t);
-  text(ctx,'VOICE CHAT',1304,632,12,'800','#687483','center');
-  drawVcBadge(ctx,1204,644,state.vc);
+  // 플랫폼 / 음성 채팅 — 아이콘과 라벨을 크게 표시
+  panel(ctx,70,684,1460,150,22,'rgba(4,7,11,.22)','rgba(255,255,255,.07)');
+  text(ctx,'PLATFORM',96,726,21,'850','#8794a1');
+  drawPlatformPills(ctx,96,746,state.platforms,t);
+  text(ctx,'VOICE CHAT',1396,726,21,'850','#8794a1','center');
+  drawVcBadge(ctx,state.vc?1350:1288,state.vc?736:746,state.vc);
 
   // 주 사용 캐릭터: 4 × 2 그리드
-  drawRosterGrid(ctx,'SURVIVOR · 사용 생존자',state.survivors,'survivor',70,722,710,494,t);
-  drawRosterGrid(ctx,'KILLER · 사용 살인마',state.killers,'killer',820,722,710,494,t);
+  drawRosterGrid(ctx,'SURVIVOR · 사용 생존자',state.survivors,'survivor',70,854,710,430,t);
+  drawRosterGrid(ctx,'KILLER · 사용 살인마',state.killers,'killer',820,854,710,430,t);
 
-  // 한마디 — 내용 길이에 맞춰 폰트를 자동 확대/축소해 여백을 줄임
-  panel(ctx,70,1240,1460,270,24,'rgba(4,7,11,.27)','rgba(255,255,255,.07)');
-  text(ctx,'한마디',98,1282,14,'850',t.accent);
-  const quoteLayout=fitQuoteLayout(ctx,state.quote||'—',1360,144,3,'800');
-  const quoteTop=1336;
+  // 한마디 — 세로 공간은 줄이고 짧은 문구는 크게 표시
+  panel(ctx,70,1304,1460,200,24,'rgba(4,7,11,.27)','rgba(255,255,255,.07)');
+  text(ctx,'한마디',98,1348,21,'850',t.accent);
+  const quoteLayout=fitQuoteLayout(ctx,state.quote||'—',1360,104,3,'800');
+  const quoteTop=1406;
   quoteLayout.lines.forEach((lineText,i)=>text(ctx,lineText,98,quoteTop+i*quoteLayout.lineHeight,quoteLayout.size,'800','#f2f4f7'));
-  text(ctx,'DBD KOREA COMMUNITY CARD',1500,1490,10,'800','#4f5b68','right');
+  text(ctx,'DBD KOREA COMMUNITY CARD',1500,1485,11,'800','#4f5b68','right');
 
   line(ctx,72,1534,1528,1534,'rgba(255,255,255,.055)');
   text(ctx,'팬메이드 · 공식 서비스가 아닙니다',72,1570,10,'600','#4f5965');

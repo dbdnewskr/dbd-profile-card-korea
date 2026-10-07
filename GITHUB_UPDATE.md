@@ -1,15 +1,11 @@
-# GitHub 업데이트 방법 (v8.3)
+# v8.4 추가 수정 GitHub 업데이트
 
-등급 명칭만 수정한 소규모 업데이트입니다.
+표시 버전은 그대로 **v8.4** 입니다.
 
-변경 사항
-- 무지갯빛 IV → 핏빛 IV
-- 무지갯빛 III → 핏빛 III
-- 무지갯빛 II → 핏빛 II
-- 무지갯빛 I → 핏빛 I
+업로드 대상
+- app.js
+- sw.js
+- CHANGELOG.md
 
-업데이트 방법
-1. 이 폴더 안의 파일들을 GitHub 저장소 루트에 업로드해 기존 파일을 덮어씁니다.
-2. 추천 커밋 메시지: `v8.3: rename iridescent grade to blood grade`
-3. GitHub Pages 배포가 완료되면 새로고침합니다.
-4. 기존 표기가 남아 있으면 강력 새로고침 또는 사이트 캐시를 지운 뒤 다시 확인합니다.
+추천 커밋 메시지
+`v8.4: tune voice chat position and inactive text`
