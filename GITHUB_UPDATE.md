@@ -1,19 +1,10 @@
-# GitHub 업데이트 방법
+# GitHub 업데이트 방법 — v8.2
 
-저장소 루트에 아래 파일을 업로드해서 기존 파일을 교체하세요.
+이번 업데이트는 한마디 영역의 가독성을 개선하는 소규모 패치입니다.
 
-- app.js
-- index.html
-- sw.js
-- data.js
+1. 이 폴더의 파일을 GitHub 저장소 루트에 업로드합니다.
+2. 같은 이름의 기존 파일은 새 파일로 덮어씁니다.
+3. 추천 커밋 메시지: `v8.2: improve quote readability`
+4. Pages 배포 완료 후 강력 새로고침(Ctrl+F5) 또는 모바일 브라우저 재실행으로 확인합니다.
 
-추천 커밋 메시지:
-`start profile card with blank fields`
-
-변경 내용:
-- 일반 링크로 새로 접속하면 모든 프로필 입력값을 빈 상태에서 시작
-- 최고 등급은 `미설정`, 플랫폼/캐릭터/VC/한마디는 선택 없음으로 시작
-- 새로고침 중에는 같은 탭의 임시 작성 내용을 유지
-- 공유 링크(#p=...)는 공유된 프로필 데이터를 그대로 불러옴
-- 과거 localStorage에 저장된 예시 프로필은 더 이상 자동으로 불러오지 않음
-- Service Worker 캐시 갱신
+변경 파일: app.js, index.html, sw.js, VERSION.txt, CHANGELOG.md

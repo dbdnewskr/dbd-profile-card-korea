@@ -354,6 +354,33 @@ function wrapLines(c,value,maxWidth,maxLines,size,weight){
   for(const segment of raw){ if(!segment){out.push('');continue;} let line=''; for(const ch of [...segment]){const test=line+ch;if(c.measureText(test).width>maxWidth&&line){out.push(line);line=ch;if(out.length>=maxLines)return out;}else line=test;} if(line)out.push(line); if(out.length>=maxLines)return out; }
   return out.slice(0,maxLines);
 }
+function wrapAllLines(c,value,maxWidth,size,weight){
+  const raw=String(value).split('\n'); const out=[];
+  c.font=`${weight} ${size}px Pretendard, 'Noto Sans KR', 'Malgun Gothic', sans-serif`;
+  for(const segment of raw){
+    if(!segment){out.push('');continue;}
+    let line='';
+    for(const ch of [...segment]){
+      const test=line+ch;
+      if(c.measureText(test).width>maxWidth && line){out.push(line);line=ch;}
+      else line=test;
+    }
+    if(line) out.push(line);
+  }
+  return out.length ? out : ['—'];
+}
+function fitQuoteLayout(c,value,maxWidth,maxHeight,maxLines=3,weight='800'){
+  const content=value || '—';
+  for(let size=54; size>=32; size--){
+    const lines=wrapAllLines(c,content,maxWidth,size,weight);
+    const lineHeight=Math.round(size*1.18);
+    if(lines.length<=maxLines && lines.length*lineHeight<=maxHeight){
+      return {lines,size,lineHeight};
+    }
+  }
+  const size=32, lineHeight=38;
+  return {lines:wrapLines(c,content,maxWidth,maxLines,size,weight),size,lineHeight};
+}
 
 function drawCard(){
   const t=THEMES[state.theme]||THEMES.mist; const w=canvas.width,h=canvas.height;
@@ -398,12 +425,13 @@ function drawCard(){
   drawRosterGrid(ctx,'SURVIVOR · 사용 생존자',state.survivors,'survivor',70,722,710,494,t);
   drawRosterGrid(ctx,'KILLER · 사용 살인마',state.killers,'killer',820,722,710,494,t);
 
-  // 한마디
-  panel(ctx,70,1240,1460,250,24,'rgba(4,7,11,.27)','rgba(255,255,255,.07)');
+  // 한마디 — 내용 길이에 맞춰 폰트를 자동 확대/축소해 여백을 줄임
+  panel(ctx,70,1240,1460,270,24,'rgba(4,7,11,.27)','rgba(255,255,255,.07)');
   text(ctx,'한마디',98,1282,14,'850',t.accent);
-  const quoteLines=wrapLines(ctx,state.quote||'—',1360,3,31,'750');
-  quoteLines.forEach((lineText,i)=>text(ctx,lineText,98,1338+i*43,31,'750','#f2f4f7'));
-  text(ctx,'DBD KOREA COMMUNITY CARD',1500,1460,10,'800','#4f5b68','right');
+  const quoteLayout=fitQuoteLayout(ctx,state.quote||'—',1360,144,3,'800');
+  const quoteTop=1336;
+  quoteLayout.lines.forEach((lineText,i)=>text(ctx,lineText,98,quoteTop+i*quoteLayout.lineHeight,quoteLayout.size,'800','#f2f4f7'));
+  text(ctx,'DBD KOREA COMMUNITY CARD',1500,1490,10,'800','#4f5b68','right');
 
   line(ctx,72,1534,1528,1534,'rgba(255,255,255,.055)');
   text(ctx,'팬메이드 · 공식 서비스가 아닙니다',72,1570,10,'600','#4f5965');
