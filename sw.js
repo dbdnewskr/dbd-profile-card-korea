@@ -1,4 +1,4 @@
-const APP_CACHE = 'dbd-profile-app-v8.4-platformicons';
+const APP_CACHE = 'dbd-profile-app-v9.0-portraitpack';
 const PORTRAIT_CACHE = 'dbd-profile-portraits-v1';
 const CORE = [
   './',
@@ -97,12 +97,14 @@ self.addEventListener('message', event => {
   const data = event.data || {};
   if (data.type !== 'CACHE_PORTRAITS' || !Array.isArray(data.urls)) return;
   event.waitUntil((async()=>{
-    const cache = await caches.open(PORTRAIT_CACHE);
     let done = 0, success = 0;
     const total = data.urls.length;
     for (const url of data.urls) {
       try {
-        const req = new Request(url, {mode:'cors', credentials:'omit'});
+        const target = new URL(url, self.location.href);
+        const sameOrigin = target.origin === self.location.origin;
+        const cache = await caches.open(sameOrigin ? APP_CACHE : PORTRAIT_CACHE);
+        const req = new Request(target.href, sameOrigin ? {credentials:'same-origin'} : {mode:'cors', credentials:'omit'});
         const exists = await cache.match(req);
         if (!exists) {
           const res = await fetch(req);

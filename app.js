@@ -606,7 +606,7 @@ async function prepareOffline(){
     const reg=await navigator.serviceWorker.ready;
     const worker=reg.active || reg.waiting || reg.installing;
     if(!worker) throw new Error('No active service worker');
-    const urls=ALL_CHARACTERS.map(ch=>proxyImage(ch.image));
+    const urls=ALL_CHARACTERS.map(ch=>new URL(localPortrait(ch),location.href).href);
     btn.disabled=true;
     btn.textContent='오프라인 저장 시작…';
     worker.postMessage({type:'CACHE_PORTRAITS',urls});
