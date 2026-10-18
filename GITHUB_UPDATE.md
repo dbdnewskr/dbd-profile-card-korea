@@ -1,21 +1,25 @@
-# v9.0 GitHub 업데이트
+# v9.1 GitHub 업데이트
 
-이번 버전은 **전체 캐릭터 초상화 98개 교체**가 포함된 대규모 업데이트입니다.
+이번 패치는 후반부 생존자 초상화 누락과 `오레라 로즈` 이름을 수정합니다.
 
-업로드 대상
-- assets/portraits/ 폴더 전체 (S01~S54, K01~K44)
-- assets/steam.png
-- assets/playstation.png
-- assets/switch.png
-- app.js
-- embedded-assets.js
-- sw.js
-- index.html
-- VERSION.txt
-- CHANGELOG.md
-- PORTRAIT_MAPPING.md
+## 업로드 대상
+- `data.js`
+- `index.html`
+- `sw.js`
+- `VERSION.txt`
+- `CHANGELOG.md`
+- `PORTRAIT_MAPPING.md`
+- `assets/portraits/S46.png`
+- `assets/portraits/S47.png`
+- `assets/portraits/S48.png`
+- `assets/portraits/S49.png`
+- `assets/portraits/S50.png`
+- `assets/portraits/S51.png`
+- `assets/portraits/S52.png`
+- `assets/portraits/S53.png`
+- `assets/portraits/S54.png`
 
-추천 커밋 메시지
-`v9.0: replace all survivor and killer portraits`
+압축을 풀고 위 파일/폴더 구조를 그대로 GitHub 저장소에 덮어쓰면 됩니다.
 
-GitHub Pages 배포 후 기존 이미지가 남으면 강력 새로고침 또는 사이트 데이터/서비스워커 캐시를 갱신해주세요.
+추천 커밋 메시지:
+`v9.1: fix Orela Rose name and restore S46-S54 portraits`

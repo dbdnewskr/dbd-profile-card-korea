@@ -51,7 +51,7 @@ const SURVIVORS = [
   ['S43','라라 크로프트','Lara Croft',4097,'S43_LaraCroft_Portrait.png'],
   ['S44','트레버 벨몬트','Trevor Belmont',4093,'S44_TrevorBelmont_Portrait.png'],
   ['S45','타우리 케인','Taurie Cain',4101,'S45_TaurieCain_Portrait.png'],
-  ['S46','오렐라 로즈','Orela Rose',4245,'S46_OrelaRose_Portrait.png'],
+  ['S46','오레라 로즈','Orela Rose',4245,'S46_OrelaRose_Portrait.png'],
   ['S47','릭 그라임스','Rick Grimes',4241,'S47_RickGrimes_Portrait.png'],
   ['S48','미숀 그라임스','Michonne Grimes',4237,'S48_MichonneGrimes_Portrait.png'],
   ['S49','뷔 분야삭','Vee Boonyasak',4233,'T_UI_S49_VeeBoonyasak_Portrait.png'],

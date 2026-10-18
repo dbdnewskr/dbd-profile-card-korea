@@ -1,4 +1,4 @@
-const APP_CACHE = 'dbd-profile-app-v9.0-portraitpack';
+const APP_CACHE = 'dbd-profile-app-v9.1-survivorfix';
 const PORTRAIT_CACHE = 'dbd-profile-portraits-v1';
 const CORE = [
   './',
