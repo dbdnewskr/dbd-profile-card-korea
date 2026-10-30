@@ -1,25 +1,22 @@
-# v9.1 GitHub 업데이트
+# v9.2 GitHub 업데이트
 
-이번 패치는 후반부 생존자 초상화 누락과 `오레라 로즈` 이름을 수정합니다.
+## 변경 내용
+- S55 시에나 쇼 추가
+- K45 테리파이어 추가
+- 신규 초상화 2종 추가
+- 로스터 수치 및 캐시 버전 갱신
 
 ## 업로드 대상
+- `assets/portraits/S55.png`
+- `assets/portraits/K45.png`
 - `data.js`
 - `index.html`
 - `sw.js`
-- `VERSION.txt`
+- `README.md`
 - `CHANGELOG.md`
+- `VERSION.txt`
 - `PORTRAIT_MAPPING.md`
-- `assets/portraits/S46.png`
-- `assets/portraits/S47.png`
-- `assets/portraits/S48.png`
-- `assets/portraits/S49.png`
-- `assets/portraits/S50.png`
-- `assets/portraits/S51.png`
-- `assets/portraits/S52.png`
-- `assets/portraits/S53.png`
-- `assets/portraits/S54.png`
-
-압축을 풀고 위 파일/폴더 구조를 그대로 GitHub 저장소에 덮어쓰면 됩니다.
+- `tools/download-portraits.ps1`
 
 추천 커밋 메시지:
-`v9.1: fix Orela Rose name and restore S46-S54 portraits`
+`v9.2: add Sienna Shaw and The Terrifier`

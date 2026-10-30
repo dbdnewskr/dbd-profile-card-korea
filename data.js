@@ -59,7 +59,8 @@ const SURVIVORS = [
   ['S51','일레븐','Eleven',4225,'T_UI_S51_Eleven_Portrait.png'],
   ['S52','권태영','Kwon Tae-young',4905,'T_UI_S52_KwonTaeYoung_Portrait.png'],
   ['S53','세인 위그와스','Shane Wiigwaas',6025,'T_UI_S53_ShaneWiigwaas_Portrait.png'],
-  ['S54','오로라 스타도터','Aurora Stardotter',6141,'T_UI_S54_Aurora_Portrait.png']
+  ['S54','오로라 스타도터','Aurora Stardotter',6141,'T_UI_S54_Aurora_Portrait.png'],
+  ['S55','시에나 쇼','Sienna Shaw',0,'S55_SiennaShaw_Portrait.webp']
 ].map(([id,ko,en,attach,file]) => ({id,ko,en,type:'survivor',image:portrait(attach,file)}));
 
 const KILLERS = [
@@ -106,7 +107,8 @@ const KILLERS = [
   ['K41','끄라스','The Krasue',4222,'T_UI_K41_TheKrasue_Portrait.png'],
   ['K42','퍼스트','The First',4223,'T_UI_K42_TheFirst_Portrait.png'],
   ['K43','슬래셔','The Slasher',5853,'T_UI_K43_TheSlasher_Portrait.png'],
-  ['K44','심판','The Judgment',6140,'T_UI_K44_TheJudgment_Portrait.png']
+  ['K44','심판','The Judgment',6140,'T_UI_K44_TheJudgment_Portrait.png'],
+  ['K45','테리파이어','The Terrifier',0,'K45_TheTerrifier_Portrait.webp']
 ].map(([id,ko,en,attach,file]) => ({id,ko,en,type:'killer',image:portrait(attach,file)}));
 
 const ALL_CHARACTERS = [...SURVIVORS, ...KILLERS];

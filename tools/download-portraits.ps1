@@ -101,6 +101,8 @@ $items = @(
   @{ Id='K42'; Url='https://img.atwiki.jp/deadbydaylight/attach/409/4223/T_UI_K42_TheFirst_Portrait.png' }
   @{ Id='K43'; Url='https://img.atwiki.jp/deadbydaylight/attach/409/5853/T_UI_K43_TheSlasher_Portrait.png' }
   @{ Id='K44'; Url='https://img.atwiki.jp/deadbydaylight/attach/409/6140/T_UI_K44_TheJudgment_Portrait.png' }
+  @{ Id='S55'; Url='' } # bundled portrait: Sienna Shaw
+  @{ Id='K45'; Url='' } # bundled portrait: The Terrifier
 )
 $ok=0; $fail=0; $total=$items.Count
 for($i=0; $i -lt $items.Count; $i++){
@@ -108,6 +110,7 @@ for($i=0; $i -lt $items.Count; $i++){
   $dest=Join-Path $out ($item.Id + '.png')
   Write-Host ('[{0}/{1}] {2}' -f ($i+1),$total,$item.Id) -ForegroundColor Cyan
   if(Test-Path $dest){ $ok++; continue }
+  if([string]::IsNullOrWhiteSpace($item.Url)){ Write-Warning ('Bundled portrait missing: ' + $item.Id); $fail++; continue }
   $clean=$item.Url -replace '^https?://',''
   $proxy='https://images.weserv.nl/?url=' + [uri]::EscapeDataString($clean) + '&w=480&h=480&fit=cover&output=png'
   try {

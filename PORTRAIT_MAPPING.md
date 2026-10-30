@@ -58,6 +58,7 @@ All local portraits are 512×512 PNG files supplied in the 2026-10 portrait arch
 | S52 | 권태영 | Kwon Tae-young | S52_KwonTae-young_Portrait.png |
 | S53 | 세인 위그와스 | Shane Wiigwaas | S53_ShaneWiigwaas_Portrait.png |
 | S54 | 오로라 스타도터 | Aurora Stardotter | S54_AuroraStardotter_Portrait.png |
+| S55 | 시에나 쇼 | Sienna Shaw | S55_SiennaShaw_Portrait.webp |
 | K01 | 트래퍼 | The Trapper | K01_TheTrapper_Portrait.png |
 | K02 | 레이스 | The Wraith | K02_TheWraith_Portrait.png |
 | K03 | 힐빌리 | The Hillbilly | K03_TheHillbilly_Portrait.png |
@@ -102,3 +103,4 @@ All local portraits are 512×512 PNG files supplied in the 2026-10 portrait arch
 | K42 | 퍼스트 | The First | K42_TheFirst_Portrait.png |
 | K43 | 슬래셔 | The Slasher | K43_TheSlasher_Portrait.png |
 | K44 | 심판 | The Judgment | K44_TheJudgment_Portrait.png |
+| K45 | 테리파이어 | The Terrifier | K45_TheTerrifier_Portrait.webp |
